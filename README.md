@@ -28,10 +28,6 @@ npm run dev
 
 # Q&A
 
-## Why can't I use `Shift + Enter` to send a message to the server?
-
-As the design showcased a mobile screen, I assumed adding that functionality would be unnecessary. However, if the developer wishes to do so, they can easilty do it by writing a function that calls the `sendMessage()` function upong detecing `Shift + Enter` and attaching it to the `<textarea>` element's `change` event.
-
 ## Why doesn't it use `useState` to update response in the UI?
 
 Due to the response coming in chunks, and having the need to update the component in charge (`<Message />`) in real time, it is better to use DOM to update the texts instead of relying on `useState`.
