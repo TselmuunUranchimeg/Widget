@@ -14,6 +14,13 @@ import feedbackCloseSvg from "./assets/FeedbackClose.svg";
 import sameSvg from "./assets/Same.svg";
 import "./Widget.css";
 
+interface WidgetInterface {
+    path: string;
+    transports: string[];
+    username?: string;
+
+}
+
 interface MessageInterface {
     isUser: boolean;
     text: string;
@@ -69,13 +76,13 @@ const Topic = ({data, socket, setMessages, setReceivingMessage}: TopicsInterface
                 });
                 socket.emit("sendMessage", {
                     id,
-                    message: data.description
+                    message: data.message
                 });
                 setReceivingMessage(true);
             }}
         >
             <h1>{data.title}</h1>
-            <p>{data.description} - {data.message}</p>
+            <p>{data.description}</p>
         </div>
     )
 }
@@ -156,6 +163,7 @@ const Message = ({ value, socket }: MessageComponentInterface) => {
                             src={likeSvg}
                             alt="Like"
                             onClick={() => handleClick()}
+                            className = "feedback-button-like"
                         />
                         <img
                             src={dislikeSvg}
@@ -300,10 +308,10 @@ const Message = ({ value, socket }: MessageComponentInterface) => {
     );
 };
 
-const Widget = () => {
-    const tabRef = useRef<null | HTMLDivElement>(null);
+const Widget = ({ path, transports, username }: WidgetInterface) => {
     const socketRef = useRef<Socket>();
     const [state, setState] = useState("");
+    const [tabVisible, setTabVisible] = useState(false);
     const [messages, setMessages] = useState<Array<MessageInterface>>([]);
     const [receivingMessage, setReceivingMessage] = useState(false);
     const [topics, setTopics] = useState<Array<TopicsMessageInterface>>([]);
@@ -320,9 +328,11 @@ const Widget = () => {
                 setReceivingMessage(false);
             }
             let documentElement = document.getElementById(id)!;
+            let tabBody = document.getElementsByClassName("tab-body")[0];
             let eleText = documentElement.innerText;
             eleText+= `${text} `;
             documentElement.innerText = eleText;
+            tabBody.scrollTop = tabBody.scrollHeight;
             setMessages((prev) => {
                 let ele = prev[prev.length - 1];
                 ele.text = eleText;
@@ -337,29 +347,28 @@ const Widget = () => {
 
     useEffect(() => {
         try {
-            socketRef.current = io("https://ws.sstrader.com", {
-                path: "/ai",
-                transports: ["websocket"],
-                parser,
-            });
-            socketRef.current.on("message", receiveMessage);
-            socketRef.current.emit("sendMessage", {
-                id: "randomWellcomeHash", // Required
-                object: "topics", // Required
-                message: "", // Optional
-                category: "wellcome", // Required
-            });
-            return () => {
-                socketRef.current?.disconnect();
-                socketRef.current?.off("message", receiveMessage);
-            };
+            if (tabVisible && topics.length === 0) {
+                socketRef.current = io("https://ws.sstrader.com", {
+                    path, transports, parser,
+                    query: {
+                        username
+                    }
+                });
+                socketRef.current.on("message", receiveMessage);
+                socketRef.current.emit("sendMessage", {
+                    id: "randomWellcomeHash", // Required
+                    object: "topics", // Required
+                    message: "", // Optional
+                    category: "wellcome", // Required
+                });
+            }
         } catch (e) {
             console.log(e);
         }
-    }, []);
+    }, [tabVisible, topics]);
 
     const sendMessage = () => {
-        if (!receivingMessage) {
+        if (!receivingMessage && state !== "") {
             const id = v4();
             socketRef.current?.emit("sendMessage", {
                 id,
@@ -386,15 +395,11 @@ const Widget = () => {
     };
 
     const makeTabVisible = () => {
-        if (tabRef.current) {
-            tabRef.current.classList.add("tab-visible");
-        }
+        setTabVisible(true);
     };
 
     const closeTab = () => {
-        if (tabRef.current) {
-            tabRef.current.classList.remove("tab-visible");
-        }
+        setTabVisible(false);
     };
 
     return (
@@ -402,7 +407,7 @@ const Widget = () => {
             <div className="widget" onClick={makeTabVisible}>
                 <img src={widgetSvg} alt="Widget icon" />
             </div>
-            <div ref={tabRef} className="tab">
+            <div className={`tab ${tabVisible ? "tab-visible" : ""}`}>
                 <div className="tab-header">
                     <img src={closeSvg} alt="Close icon" onClick={closeTab} />
                 </div>
@@ -452,17 +457,33 @@ const Widget = () => {
                             <textarea
                                 placeholder="Send message"
                                 value={state}
+                                onKeyDown = {e => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        sendMessage();
+                                    }
+                                }}
                                 onChange={(e) => {
                                     setState(e.currentTarget.value);
                                 }}
                             />
-                            <img
-                                src={sendSvg}
-                                alt="Send icon"
-                                onClick={() => {
+                            <div 
+                                className = "send-button"
+                                style = {{
+                                    backgroundColor: state === "" ? "" : !receivingMessage ? "#F1CB22" : ""
+                                }}
+                                onClick = {() => {
                                     sendMessage();
                                 }}
-                            />
+                            >
+                                <img
+                                    src={sendSvg}
+                                    alt="Send icon"
+                                    style = {{
+                                        opacity: receivingMessage ? 0.4 : 1
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="tab-input-footer">

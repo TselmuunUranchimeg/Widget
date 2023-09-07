@@ -23,29 +23,30 @@
 
 .tab {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
-    left: 0;
-    top: 0;
     background-color: black;
     color: white;
     display: none;
     opacity: 0;
 }
 
-.tab-header, .tab-body, .tab-input {
+.tab-header,
+.tab-body,
+.tab-input {
     width: 100%;
 }
 
 .tab-header {
     display: flex;
-    height: 7%;
+    height: 10%;
     justify-content: flex-end;
     box-sizing: border-box;
     padding: 5px 10px;
+    align-items: center;
 }
 .tab-header img {
     cursor: pointer;
+    width: 30px;
+    height: 30px;
 }
 
 .tab-body {
@@ -61,13 +62,15 @@
 .tab-placeholder-notice {
     width: 100%;
     text-align: center;
-    height: 30%;
+    height: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 5%;
 }
-.tab-placeholder-notice h1, .tab-placeholder-notice p {
+.tab-placeholder-notice h1,
+.tab-placeholder-notice p {
     margin: 0;
     margin-bottom: 0.3rem;
 }
@@ -88,8 +91,8 @@
 }
 
 .tab-input {
-    height: 15%;
-    background-color: #4D4D4F;
+    height: 17.5%;
+    background-color: #4d4d4f;
 }
 
 .tab-input-section {
@@ -99,8 +102,8 @@
     justify-content: center;
     box-sizing: border-box;
     padding: 0.6rem 1rem 0.5rem;
-
 }
+
 .tab-textarea {
     background-color: #393939;
     width: 100%;
@@ -109,12 +112,15 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem;
+    position: relative;
+    min-height: 51px;
+    margin-top: 5px;
 }
 .tab-textarea textarea {
     background-color: #393939;
     border: none;
-    width: calc(100% - 40px);
+    width: calc(100% - 51px);
     resize: none;
     color: white;
     margin-right: 1rem;
@@ -124,8 +130,17 @@
     padding: 6px 0;
     outline: none;
 }
-.tab-textarea img {
+
+.send-button {
+    position: absolute;
+    right: 0;
+    height: 51px;
+    width: 51px;
+    display: flex;
+    justify-content: center;
     cursor: pointer;
+    align-items: center;
+    border-radius: 10px;
 }
 
 .tab-input-footer {
@@ -144,27 +159,32 @@
 }
 
 .topic {
-    border: 1px solid white;
+    border: 1px solid #707070;
     text-align: left;
     box-sizing: border-box;
     padding: 0.5rem 1rem;
     cursor: pointer;
     width: 80% !important;
-    border-radius: 1rem;
-    margin-bottom: 0.75rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+}
+.topic h1,
+.topic p {
+    margin: 0;
 }
 .topic h1 {
-    font-size: 1rem;
+    font: normal normal bold 16px/18px Roboto;
+    margin-bottom: 7.5px;
 }
-.topic h1, .topic p {
-    margin: 0;
+.topic p {
+    font: normal normal normal 12px/14px Roboto;
 }
 
 .message {
     display: flex;
     width: 100%;
     margin-bottom: 0.5rem;
-    border-bottom: 0.5px solid #595A5C;
+    border-bottom: 0.5px solid #595a5c;
     padding: 0.5rem 0 1rem;
 }
 
@@ -182,7 +202,12 @@
     padding-right: 1.25rem;
 }
 
-.actual-text, .message-text p {
+.actual-text {
+    white-space: pre-line;
+}
+
+.actual-text,
+.message-text p {
     margin: 0;
 }
 
@@ -202,6 +227,10 @@
 
 .feedback-button-dislike {
     margin-left: 1rem;
+}
+
+.feedback-button-like {
+    padding-bottom: 9px;
 }
 
 .feedback-tab {
@@ -232,6 +261,7 @@
     display: flex;
     width: 33%;
     justify-content: center;
+    align-items: center;
     cursor: pointer;
     padding: 0.5rem 0;
     border-radius: 0.5rem;
@@ -249,7 +279,7 @@
 }
 
 .feedback-worse-textarea {
-    background-color: #1B1B1B;
+    background-color: #1b1b1b;
     color: white;
     width: 100%;
     outline: none;
@@ -264,6 +294,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 10px;
+    margin-bottom: 0.25rem;
 }
 
 .feedback-worse-option {
@@ -290,4 +321,31 @@
     border: none;
     border-radius: 5px;
     padding: 6px 8px;
+}
+
+@media screen and (max-width: 768px) {
+    .tab {
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .tab {
+        width: 375px;
+        height: 600px;
+        bottom: 5%;
+        right: 0;
+    }
+    .message-icon {
+        padding-left: 0.75rem;
+    }
+    .message-text {
+        padding: 0 0.75rem;
+    }
+    .feedback-options-option img {
+        margin-right: 0.4rem;
+    }
 }

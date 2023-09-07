@@ -4,7 +4,11 @@ import "./App.css";
 function App() {
     return (
         <div>
-            <Widget />
+            <Widget 
+                path = "/ai"
+                transports = {["websocket"]}
+                username = "randomUsername"
+            />
         </div>
     );
 }
