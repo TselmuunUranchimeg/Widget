@@ -5,9 +5,15 @@ function App() {
     return (
         <div>
             <Widget 
-                path = "/ai"
-                transports = {["websocket"]}
-                username = "randomUsername"
+                parameters = {{
+                    path: "/ai",
+                    query: {
+                        username: "MD5 hash of username",
+                        language: "EN",
+                        token: "JWT string",
+                        other_options: "Other values"
+                    }
+                }}
             />
         </div>
     );

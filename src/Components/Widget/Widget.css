@@ -91,12 +91,11 @@
 }
 
 .tab-input {
-    height: 17.5%;
+    height: auto;
     background-color: #4d4d4f;
 }
 
 .tab-input-section {
-    height: calc(100% - 35px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,14 +125,17 @@
     margin-right: 1rem;
     box-sizing: border-box;
     font-size: 1rem;
-    height: 2rem;
+    min-height: 2rem;
     padding: 6px 0;
     outline: none;
+    max-height: 88px;
+    overflow-y: auto;
 }
 
 .send-button {
     position: absolute;
     right: 0;
+    bottom: 0;
     height: 51px;
     width: 51px;
     display: flex;
@@ -148,14 +150,15 @@
     justify-content: center;
 }
 .tab-input-footer h1 {
+    font: var(--unnamed-font-style-normal) normal
+        var(--unnamed-font-weight-normal) 12px / var(--unnamed-line-spacing-24)
+        Roboto;
+    font: normal normal normal 12px/24px Roboto;
     opacity: 0.75;
-    font-size: 1rem;
-    font-weight: 300;
-    font-family: sans-serif;
     margin: 5px 0;
 }
 .tab-input-footer img {
-    margin-left: 1rem;
+    margin-left: 0.75rem;
 }
 
 .topic {
@@ -173,10 +176,16 @@
     margin: 0;
 }
 .topic h1 {
+    font: var(--unnamed-font-style-normal) normal
+        var(--unnamed-font-weight-bold) 16px/18px Roboto;
+    letter-spacing: var(--unnamed-character-spacing-0);
     font: normal normal bold 16px/18px Roboto;
     margin-bottom: 7.5px;
 }
 .topic p {
+    font: var(--unnamed-font-style-normal) normal
+        var(--unnamed-font-weight-normal) 12px/14px Roboto;
+    letter-spacing: var(--unnamed-character-spacing-0);
     font: normal normal normal 12px/14px Roboto;
 }
 
@@ -239,6 +248,7 @@
     background-color: #414343;
     box-sizing: border-box;
     padding: 1rem;
+    border-radius: 10px;
 }
 
 .feedback-header {
