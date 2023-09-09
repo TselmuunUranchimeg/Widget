@@ -345,6 +345,7 @@ const Message = ({ value, socket, receivingMessage }: MessageComponentInterface)
                                                 category: Feedback.Worse,
                                             });
                                             setSubmitted(true);
+                                            setVisible(false);
                                         }
                                     }}
                                     className="feedback-submit-button"
@@ -395,6 +396,8 @@ const Widget = ({ parameters }: WidgetInterface) => {
         } else {
             if (d.object === "topics") {
                 setTopics(d.message);
+            } else {
+                console.log(d);
             }
         }
     };
